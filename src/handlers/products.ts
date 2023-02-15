@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express'
 import { product, productStore } from '../models/product'
 import verifyAuthToken from '../middleware/verifyAuthToken'
+import supertest from 'supertest';
+
 
 const store = new productStore()
 
@@ -10,8 +12,14 @@ const index = async (_req: Request, res: Response) => {
 }
 
 const show = async (req: Request, res: Response) => {
-    const studentClass = await store.show(req.params.id)
-    res.json(studentClass)
+
+    try {
+        const studentClass = await store.show(req.params.id)
+        res.json(studentClass)
+     } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
  }
 
  const create = async (req: Request, res: Response) => {
@@ -32,13 +40,19 @@ const show = async (req: Request, res: Response) => {
  }
 
  const destroy = async (req: Request, res: Response) => {
-    const deleted = await store.delete(req.params.id)
-    res.json("deleted")
+
+    try {
+        const deleted = await store.delete(req.params.id)
+        res.json(deleted.id)
+     } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
 }
 
 const productRoutes = (app: express.Application) => {
-    app.get('/products',verifyAuthToken ,index)
-    app.get('/products/:id', verifyAuthToken, show)
+    app.get('/products' ,index)
+    app.get('/products/:id', show)
     app.post('/products', verifyAuthToken,create)
     app.delete('/products/:id',verifyAuthToken ,destroy)
 }

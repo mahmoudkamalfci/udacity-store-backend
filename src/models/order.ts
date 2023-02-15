@@ -46,7 +46,6 @@ export class orderStore {
       }
 
       async create(s: order): Promise<order> {
-        console.log(s)
         try {
             const sql = 'INSERT INTO orders (user_id, order_status) VALUES($1, $2) RETURNING *'
             const conn = await client.connect()
@@ -54,8 +53,6 @@ export class orderStore {
             const result = await conn.query(sql, [s.user_id, s.order_status])
         
             const order = result.rows[0]
-
-            console.log(result)
         
             conn.release()
         
@@ -75,7 +72,7 @@ export class orderStore {
     
         const order = result.rows[0]
             
-        return order
+        return order.id
         } catch (err) {
                 throw new Error(`Could not delete order ${id}. Error: ${err}`)
             }
@@ -97,7 +94,6 @@ export class orderStore {
     }
 
     async addToCart(p:order_product):Promise<order_product> {
-        console.log(p)
         try {
             const sql = 'INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *'
             const conn = await client.connect()

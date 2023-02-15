@@ -5,13 +5,23 @@ import verifyAuthToken from '../middleware/verifyAuthToken'
 const store = new orderStore()
 const {TOKEN_SECRET} = process.env
 const index = async (_req: Request, res: Response) => {
-  const orders = await store.index()
-  res.json(orders)
+    try {
+        const orders = await store.index()
+        res.json(orders)
+   } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
 }
 
 const show = async (req: Request, res: Response) => {
-    const order = await store.show(req.params.id)
-    res.json(order)
+    try {
+        const order = await store.show(req.params.id)
+        res.json(order)
+    } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
  }
 
  const create = async (req: Request, res: Response) => {
@@ -22,7 +32,6 @@ const show = async (req: Request, res: Response) => {
          }
 
          const newOrder = await store.create(order)
-         console.log(newOrder)
 
          res.json(newOrder)
      } catch(err) {
@@ -41,22 +50,24 @@ const show = async (req: Request, res: Response) => {
 }
 
 const getCurrentOrderByUser = async (req: Request, res: Response) => {
-    console.log(req.params.id)
-    const order = await store.getCurrentOrderByUser(Number(req.params.id))
-    res.json(order)
+    try {
+        const order = await store.getCurrentOrderByUser(Number(req.params.id))
+        res.json(order)
+     } catch(err) {
+        res.status(400)
+        res.json(err)
+    }
  }
 
  const addProductToCart = async (req: Request, res: Response) => {
-    console.log(req.body)
     try {
         const order_product: order_product = {
-            order_id: req.body.order_id,
-            product_id: req.body.product_id,
-            quantity: req.body.quantity
+            order_id: Number(req.body.order_id),
+            product_id: Number(req.body.product_id),
+            quantity: Number(req.body.quantity)
         }
 
         const newOrderProduct = await store.addToCart(order_product)
-        console.log(newOrderProduct)
 
         res.json(newOrderProduct)
     } catch(err) {

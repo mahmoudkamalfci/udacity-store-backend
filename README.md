@@ -1,3 +1,25 @@
+## Required Technologies
+Your application must make use of the following libraries:
+- Postgres for the database
+- Node/Express for the application logic
+- dotenv from npm for managing environment variables
+- db-migrate from npm for migrations
+- jsonwebtoken from npm for working with JWTs
+- jasmine from npm for testing
+
+# get start with project 
+- install all required packages (npm install)
+- application run on port 3000 (localhost:3000)
+- database run on default port 5432
+- build app (npm run build)
+- watch or start this app ( npm run watch)
+- run test ( npm run test)
+- run migration up & down (db-migrate up - db-migrate down)
+
+# db instruction (to work with this project you need)
+- create dev database called store
+- create test database called store_test
+
 # database credentials
 - POSTGRES_HOST = localhost
 - POSTGRES_DB = store
@@ -29,19 +51,12 @@
 - addtocart               (POST add product to specific order body[order_id, product_id, quantity] create order first)
 
 # database schema
-- user              (id, firstname, lastname, password)
-- product           (id, name, price, category)
-- order             (id, user_id, order_status)
-- order_products    (id, order_id, product_id, quantity)
+- user              (id INTEGER, firstname VARCHAR(50), lastname VARCHAR(50), password VARCHAR(25))
+- product           (id INTEGER, name VARCHAR(100), price DECIMAL(10, 2), category VARCHAR(100))
+- order             (id INTEGER, user_id INTEGER, order_status VARCHAR(10))
+- order_products    (id, order_id INTEGER reference to order.id, product_id INTEGER reference to product.id, quantity INTEGER)
 
 This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+
 

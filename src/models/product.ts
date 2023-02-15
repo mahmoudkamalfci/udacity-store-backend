@@ -2,6 +2,7 @@ import client  from "../db"
 import bcrypt from 'bcrypt'
 
 export type product = {
+    id?: number
     name: string
     price: number
     category: string
@@ -69,7 +70,7 @@ export class productStore {
         const product = result.rows[0]
     
     
-        return product
+        return product.id
         } catch (err) {
                 throw new Error(`Could not delete student ${id}. Error: ${err}`)
             }
