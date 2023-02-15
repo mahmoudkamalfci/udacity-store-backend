@@ -41,11 +41,17 @@ const show = async (req: Request, res: Response) => {
  }
 
  const destroy = async (req: Request, res: Response) => {
-    const deleted = await store.delete(req.params.id)
-    if(deleted) {
-        res.json("deleted")
-    } else {
-        res.status(401).send("the order not exists")
+
+    try {
+        const deleted = await store.delete(req.params.id)
+        if(deleted) {
+            res.json("deleted")
+        } else {
+            res.status(401).send("the order not exists")
+        }
+    } catch(err) {
+        res.status(400)
+        res.json(err)
     }
 }
 
